@@ -46,6 +46,13 @@ module.exports = {
         result: ['running', 'survived', 'jumpscared'],
       },
     });
+
+    // Design Change Notice 01: 2-column unique constraint
+    await queryInterface.addConstraint('game_sessions', {
+      fields: ['session_id', 'user_id'],
+      type: 'unique',
+      name: 'uq_one_seat',
+    });
   },
 
   async down(queryInterface) {
