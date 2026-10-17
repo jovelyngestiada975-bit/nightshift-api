@@ -7,11 +7,11 @@ async function checkDatabase() {
     await sequelize.authenticate();
 
     const expected = {
-      users: 3,
-      game_sessions: 2,
-      nights: 2,
-      camera_event_logs: 4,
-      scores: 2,
+      users: 4,
+      game_sessions: 3,
+      nights: 3,
+      camera_event_logs: 3,
+      scores: 3,
     };
 
     const tables = Object.keys(expected);
@@ -30,7 +30,6 @@ async function checkDatabase() {
 
     console.table(results);
 
-    // Query leaderboard display
     const [leaderboard] = await sequelize.query(`
       SELECT u.school_id, u.full_name, s.best_night_reached, s.total_survival_time
       FROM scores s

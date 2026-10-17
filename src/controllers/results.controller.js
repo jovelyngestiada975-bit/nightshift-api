@@ -1,3 +1,5 @@
+'use strict';
+
 // Translates between HTTP and the service. No SQL, no business rules.
 const gameInfo = require('../config/game-info');
 const resultsService = require('../services/results.service');
