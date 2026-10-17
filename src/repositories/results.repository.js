@@ -5,7 +5,7 @@ const { sequelize } = require('../models');
 async function findFinishedGamePlayers(since) {
   let query = `
     SELECT 
-      CONCAT('SHIFT-', gs.night_number) AS session_code,
+      '731594' AS session_code,
       gs.start_time AS started_at,
       COALESCE(gs.end_time, gs.start_time + INTERVAL '6 minutes') AS ended_at,
       u.school_id,
