@@ -1,0 +1,322 @@
+{
+  "info": {
+    "name": "NightShift API - Week 11",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1" },
+    { "key": "host", "value": "2099-0004" },
+    { "key": "otherHost", "value": "2099-0005" },
+    { "key": "player1", "value": "2099-0001" },
+    { "key": "player2", "value": "2099-0002" },
+    { "key": "shiftId", "value": "1" },
+    { "key": "code", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Module 1 - Shifts",
+      "item": [
+        {
+          "name": "1. Host creates a shift",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set('shiftId', pm.response.json().id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{host}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Nightmare Protocol Shift\",\n  \"difficulty\": \"Hard\",\n  \"is_public\": true\n}"
+            },
+            "url": "{{baseUrl}}/shifts"
+          }
+        },
+        {
+          "name": "2. Validation failure - short title",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400', function () { pm.response.to.have.status(400); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{host}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"no\"\n}"
+            },
+            "url": "{{baseUrl}}/shifts"
+          }
+        },
+        {
+          "name": "3. Not owner - other host gets 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 403', function () { pm.response.to.have.status(403); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{otherHost}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Unauthorized Edit\"\n}"
+            },
+            "url": "{{baseUrl}}/shifts/{{shiftId}}"
+          }
+        },
+        {
+          "name": "4. Read shift by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Demo-User", "value": "{{host}}" }
+            ],
+            "url": "{{baseUrl}}/shifts/{{shiftId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 2 - Sessions and Players",
+      "item": [
+        {
+          "name": "1. Host starts a session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set('code', pm.response.json().code);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{host}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shift_id\": {{shiftId}}\n}"
+            },
+            "url": "{{baseUrl}}/sessions"
+          }
+        },
+        {
+          "name": "2. Read session by 6-digit code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sessions/{{code}}"
+          }
+        },
+        {
+          "name": "3. Player 1 joins (201 Created)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('rejoined is false', function () { pm.expect(pm.response.json().rejoined).to.be.false; });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{player1}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickname\": \"Operator_Alex\"\n}"
+            },
+            "url": "{{baseUrl}}/sessions/{{code}}/players"
+          }
+        },
+        {
+          "name": "4. Player 1 rejoins same game (200 OK)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 Rejoin', function () { pm.response.to.have.status(200); });",
+                  "pm.test('rejoined is true', function () { pm.expect(pm.response.json().rejoined).to.be.true; });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{player1}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickname\": \"Operator_Alex\"\n}"
+            },
+            "url": "{{baseUrl}}/sessions/{{code}}/players"
+          }
+        },
+        {
+          "name": "5. Nickname taken in same session (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 409 NICKNAME_TAKEN', function () { pm.response.to.have.status(409); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{player2}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickname\": \"Operator_Alex\"\n}"
+            },
+            "url": "{{baseUrl}}/sessions/{{code}}/players"
+          }
+        },
+        {
+          "name": "6. Host starts the game (status RUNNING)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{host}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"RUNNING\"\n}"
+            },
+            "url": "{{baseUrl}}/sessions/{{code}}"
+          }
+        },
+        {
+          "name": "7. New player joins running game (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 409 SESSION_NOT_JOINABLE', function () { pm.response.to.have.status(409); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Demo-User", "value": "{{player2}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickname\": \"NewPlayer\"\n}"
+            },
+            "url": "{{baseUrl}}/sessions/{{code}}/players"
+          }
+        },
+        {
+          "name": "8. List players in session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sessions/{{code}}/players"
+          }
+        }
+      ]
+    }
+  ]
+}
