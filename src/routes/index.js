@@ -1,18 +1,19 @@
-// The single place that maps URLs to route files.
+'use strict';
+
 const { Router } = require('express');
 const currentUser = require('../middlewares/current-user');
 
 const router = Router();
 
-// Hub Contract endpoints: open to everyone, so they come before currentUser.
+// Public / Hub Contract endpoints
 router.use('/health', require('./health.routes'));
 router.use('/game-info', require('./game-info.routes'));
+router.use('/results', require('./results.routes'));
 
-// From here on, req.user says who is calling (or null).
+// From here on, req.user is set via X-Demo-User header
 router.use(currentUser);
 
-// Mount your modules here, one line each. For example:
-// router.use('/question-sets', require('./question-set.routes'));
-// router.use('/sessions', require('./session.routes'));
+// Game Modules
+router.use('/shifts', require('./shift.routes'));
 
 module.exports = router;

@@ -1,0 +1,318 @@
+{
+  "info": {
+    "name": "NightShift API - Week 11",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1" },
+    { "key": "host", "value": "2099-0004" },
+    { "key": "otherHost", "value": "2099-0005" },
+    { "key": "player", "value": "2099-0001" },
+    { "key": "shiftId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "1. It works (Create Shift)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+              "var json = pm.response.json();",
+              "pm.collectionVariables.set('shiftId', json.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Overnight Shift 2 - High Voltage\",\n  \"difficulty\": \"Hard\",\n  \"is_public\": true\n}"
+        },
+        "url": "{{baseUrl}}/shifts"
+      }
+    },
+    {
+      "name": "2. A field is wrong (Title too short)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400 VALIDATION_FAILED', function () { pm.response.to.have.status(400); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"ab\"\n}"
+        },
+        "url": "{{baseUrl}}/shifts"
+      }
+    },
+    {
+      "name": "3. The body is broken (Invalid JSON)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400 INVALID_JSON', function () { pm.response.to.have.status(400); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"broken json\""
+        },
+        "url": "{{baseUrl}}/shifts"
+      }
+    },
+    {
+      "name": "4. Nobody (Missing X-Demo-User)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 401 AUTH_REQUIRED', function () { pm.response.to.have.status(401); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/shifts"
+      }
+    },
+    {
+      "name": "5. The wrong role (Player calls host route)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 403 FORBIDDEN', function () { pm.response.to.have.status(403); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Demo-User", "value": "{{player}}" }
+        ],
+        "url": "{{baseUrl}}/shifts"
+      }
+    },
+    {
+      "name": "6. List shifts as host",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "url": "{{baseUrl}}/shifts"
+      }
+    },
+    {
+      "name": "7. Read one shift",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "url": "{{baseUrl}}/shifts/{{shiftId}}"
+      }
+    },
+    {
+      "name": "8. It does not exist",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 404 SHIFT_NOT_FOUND', function () { pm.response.to.have.status(404); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "url": "{{baseUrl}}/shifts/999"
+      }
+    },
+    {
+      "name": "9. The id is not a number",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400 VALIDATION_FAILED', function () { pm.response.to.have.status(400); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "url": "{{baseUrl}}/shifts/abc"
+      }
+    },
+    {
+      "name": "10. Update as host",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Overnight Shift 2 - Updated Title\"\n}"
+        },
+        "url": "{{baseUrl}}/shifts/{{shiftId}}"
+      }
+    },
+    {
+      "name": "11. Not the owner (Other host tries to edit)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 403 FORBIDDEN', function () { pm.response.to.have.status(403); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{otherHost}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Hacked Shift Title\"\n}"
+        },
+        "url": "{{baseUrl}}/shifts/{{shiftId}}"
+      }
+    },
+    {
+      "name": "12. Nothing to change (Empty body)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400 VALIDATION_FAILED', function () { pm.response.to.have.status(400); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": "{{baseUrl}}/shifts/{{shiftId}}"
+      }
+    },
+    {
+      "name": "13. Delete as host",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 204 No Content', function () { pm.response.to.have.status(204); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "X-Demo-User", "value": "{{host}}" }
+        ],
+        "url": "{{baseUrl}}/shifts/{{shiftId}}"
+      }
+    }
+  ]
+}
