@@ -11,12 +11,18 @@ const sequelize = new Sequelize(
   dbConfig
 );
 
-// I-load ang User model mula sa Week 11 Kit
+// Models
 const User = require('./user')(sequelize, DataTypes);
+const Shift = require('./shift')(sequelize, DataTypes);
+
+// Associations (ERD Relationships)
+User.hasMany(Shift, { foreignKey: 'host_id' });
+Shift.belongsTo(User, { foreignKey: 'host_id', as: 'host' });
 
 module.exports = {
   sequelize,
   Sequelize,
   DataTypes,
   User,
+  Shift,
 };
