@@ -1,9 +1,9 @@
 # NightShift.exe API
 
-Backend API for **NightShift.exe**, a tournament game for the SorSU Bulan Campus library.
+Backend API for **NightShift.exe**, a survival-horror tournament game for the SorSU Bulan Campus library.
 CS 313 Software Engineering 1, A.Y. 2026-2027.
 
-- Developer: Jovelyn , BSCS 3-2
+- Developer: Jovelyn Pestaño (jovelyngestiada975-bit), BSCS 3-1
 - Group and game concept: Group 1 (NightShift.exe)
 
 This is my own build of my group's game concept. Every commit in this repository was made by me, with Git, on my own computer or in my own Codespace.
@@ -16,6 +16,8 @@ This is my own build of my group's game concept. Every commit in this repository
 | Web framework | Express 5 |
 | Database | PostgreSQL 16 or newer |
 | ORM and migrations | Sequelize 6 with sequelize-cli |
+| Validation | express-validator |
+| Logger | morgan |
 
 ## Setup
 
