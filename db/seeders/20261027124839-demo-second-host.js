@@ -4,7 +4,7 @@ module.exports = {
   async up(queryInterface) {
     const db = queryInterface.sequelize;
 
-    // Magdagdag ng dalawang HOST accounts
+    // ADD TWO HOST accounts
     await queryInterface.bulkInsert('users', [
       {
         school_id: '2099-0004',
@@ -22,7 +22,7 @@ module.exports = {
       },
     ]);
 
-    // Kunin ang ID ni Host 1 (Marcus) para mag-insert ng isang default shift
+    
     const [[marcus]] = await db.query(
       "SELECT user_id FROM users WHERE school_id = '2099-0004'"
     );
