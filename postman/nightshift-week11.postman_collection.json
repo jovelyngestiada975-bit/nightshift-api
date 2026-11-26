@@ -1,17 +1,11 @@
 {
   "info": {
+    "_postman_id": "23f3ff11-bd71-498f-ae41-a05909102a2b",
     "name": "NightShift API - Week 11",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "59393145",
+    "_collection_link": "https://go.postman.co/collection/59393145-23f3ff11-bd71-498f-ae41-a05909102a2b?source=collection_link"
   },
-  "variable": [
-    { "key": "baseUrl", "value": "http://localhost:3001/api/v1" },
-    { "key": "host", "value": "2099-0004" },
-    { "key": "otherHost", "value": "2099-0005" },
-    { "key": "player1", "value": "2099-0001" },
-    { "key": "player2", "value": "2099-0002" },
-    { "key": "shiftId", "value": "1" },
-    { "key": "code", "value": "" }
-  ],
   "item": [
     {
       "name": "Module 1 - Shifts",
@@ -22,26 +16,45 @@
             {
               "listen": "test",
               "script": {
+                "type": "text/javascript",
                 "exec": [
-                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
-                  "pm.collectionVariables.set('shiftId', pm.response.json().id);"
-                ],
-                "type": "text/javascript"
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });\npm.collectionVariables.set('shiftId', pm.response.json().id);"
+                ]
               }
             }
           ],
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{host}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{host}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Nightmare Protocol Shift\",\n  \"difficulty\": \"Hard\",\n  \"is_public\": true\n}"
+              "raw": "{\n  \"title\": \"NightShift.exe\",\n  \"difficulty\": \"Hard\",\n  \"is_public\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
             },
-            "url": "{{baseUrl}}/shifts"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/shifts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shifts"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "2. Validation failure - short title",
@@ -59,15 +72,30 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{host}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{host}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"title\": \"no\"\n}"
             },
-            "url": "{{baseUrl}}/shifts"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/shifts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shifts"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "3. Not owner - other host gets 403",
@@ -85,15 +113,31 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{otherHost}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{otherHost}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"title\": \"Unauthorized Edit\"\n}"
             },
-            "url": "{{baseUrl}}/shifts/{{shiftId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/shifts/{{shiftId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shifts",
+                "{{shiftId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "4. Read shift by ID",
@@ -111,10 +155,23 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "X-Demo-User", "value": "{{host}}" }
+              {
+                "key": "X-Demo-User",
+                "value": "{{host}}"
+              }
             ],
-            "url": "{{baseUrl}}/shifts/{{shiftId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/shifts/{{shiftId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shifts",
+                "{{shiftId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -138,15 +195,30 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{host}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{host}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"shift_id\": {{shiftId}}\n}"
             },
-            "url": "{{baseUrl}}/sessions"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/sessions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sessions"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "2. Read session by 6-digit code",
@@ -163,8 +235,19 @@
           ],
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/sessions/{{code}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sessions/{{code}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sessions",
+                "{{code}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "3. Player 1 joins (201 Created)",
@@ -183,15 +266,32 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{player1}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{player1}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nickname\": \"Operator_Alex\"\n}"
             },
-            "url": "{{baseUrl}}/sessions/{{code}}/players"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/sessions/{{code}}/players",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sessions",
+                "{{code}}",
+                "players"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "4. Player 1 rejoins same game (200 OK)",
@@ -210,15 +310,32 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{player1}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{player1}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nickname\": \"Operator_Alex\"\n}"
             },
-            "url": "{{baseUrl}}/sessions/{{code}}/players"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/sessions/{{code}}/players",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sessions",
+                "{{code}}",
+                "players"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "5. Nickname taken in same session (409)",
@@ -236,15 +353,32 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{player2}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{player2}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nickname\": \"Operator_Alex\"\n}"
             },
-            "url": "{{baseUrl}}/sessions/{{code}}/players"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/sessions/{{code}}/players",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sessions",
+                "{{code}}",
+                "players"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "6. Host starts the game (status RUNNING)",
@@ -262,15 +396,31 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{host}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{host}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"status\": \"RUNNING\"\n}"
             },
-            "url": "{{baseUrl}}/sessions/{{code}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/sessions/{{code}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sessions",
+                "{{code}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "7. New player joins running game (409)",
@@ -288,15 +438,32 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Demo-User", "value": "{{player2}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Demo-User",
+                "value": "{{player2}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nickname\": \"NewPlayer\"\n}"
             },
-            "url": "{{baseUrl}}/sessions/{{code}}/players"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/sessions/{{code}}/players",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sessions",
+                "{{code}}",
+                "players"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "8. List players in session",
@@ -313,10 +480,52 @@
           ],
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/sessions/{{code}}/players"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sessions/{{code}}/players",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sessions",
+                "{{code}}",
+                "players"
+              ]
+            }
+          },
+          "response": []
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api/v1"
+    },
+    {
+      "key": "host",
+      "value": "2099-0004"
+    },
+    {
+      "key": "otherHost",
+      "value": "2099-0005"
+    },
+    {
+      "key": "player1",
+      "value": "2099-0001"
+    },
+    {
+      "key": "player2",
+      "value": "2099-0002"
+    },
+    {
+      "key": "shiftId",
+      "value": "1"
+    },
+    {
+      "key": "code",
+      "value": ""
     }
   ]
 }

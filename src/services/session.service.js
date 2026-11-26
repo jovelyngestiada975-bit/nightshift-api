@@ -35,6 +35,7 @@ async function create(shiftId, user) {
   for (let attempt = 1; attempt <= 5; attempt += 1) {
     try {
       return await sessionRepository.create({
+        user_id: user.user_id,
         host_id: user.user_id,
         shift_id: shift ? shift.shift_id : null,
         join_pin: randomCode(),

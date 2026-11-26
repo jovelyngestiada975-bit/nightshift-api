@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) =>
         primaryKey: true,
         autoIncrement: true,
       },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       host_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -41,10 +45,12 @@ module.exports = (sequelize, DataTypes) =>
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
+        field: 'start_time',
       },
       ended_at: {
         type: DataTypes.DATE,
         allowNull: true,
+        field: 'end_time',
       },
     },
     {
