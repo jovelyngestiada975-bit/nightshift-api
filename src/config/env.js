@@ -38,4 +38,5 @@ module.exports = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
   },
+  bcryptRounds: Number(process.env.BCRYPT_ROUNDS) || 10,
 };
