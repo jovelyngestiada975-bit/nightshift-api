@@ -10,10 +10,12 @@ router.use('/health', require('./health.routes'));
 router.use('/game-info', require('./game-info.routes'));
 router.use('/results', require('./results.routes'));
 
-// From here on, req.user is set via X-Demo-User header
+// From here on, req.user is set from the Authorization: Bearer <token> header
 router.use(currentUser);
 
-// Game Modules
+// Accounts and Game Modules
+router.use('/auth', require('./auth.routes'));
+router.use('/users', require('./user.routes'));
 router.use('/shifts', require('./shift.routes'));
 router.use('/sessions', require('./session.routes'));
 

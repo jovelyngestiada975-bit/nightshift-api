@@ -25,3 +25,16 @@ This is my own build of my group's game concept. Every commit in this repository
 git clone [repository-url]
 cd cs313-game-api-template-main
 npm install
+
+## Demo accounts
+
+All seeded accounts share the demo password: `NightShift.exe-2026`
+
+| School ID | Role |
+|---|---|
+| `2099-9001` | `ADMIN` |
+| `2099-0004` | `HOST` |
+| `2099-0005` | `HOST` |
+| `2099-0001` | `PLAYER` |
+| `2099-0002` | `PLAYER` |
+| `2099-0003` | `PLAYER` |
